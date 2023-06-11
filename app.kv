@@ -1,2 +1,85 @@
 # Create your Kivy layout in the kv language here
 BoxLayout:
+    orientation: 'horizontal'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Spinner:
+            id: spinner
+            text: 'Sort by'
+            values: ['Name', 'Country', 'Priority', 'Visited']
+            on_text: app.sort_places(self, self.text)
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Label:
+                text: 'Name'
+                size_hint_x: 0.3
+
+            TextInput:
+                id: name_input
+                size_hint_x: 0.7
+                multiline: False
+                on_text_validate: country_input.focus = True
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Label:
+                text: 'Country'
+                size_hint_x: 0.3
+
+            TextInput:
+                id: country_input
+                size_hint_x: 0.7
+                multiline: False
+                on_text_validate: priority_input.focus = True
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Label:
+                text: 'Priority'
+                size_hint_x: 0.3
+
+            TextInput:
+                id: priority_input
+                size_hint_x: 0.7
+                multiline: False
+                input_type: 'number'
+                input_filter: 'int'
+                on_text_validate: app.add_place(self)
+
+        Button:
+            text: 'Add Place'
+            size_hint_y: 0.1
+            on_press: app.add_place(self)
+
+        Button:
+            text: 'Clear'
+            size_hint_y: 0.1
+            on_press: app.clear_inputs()
+
+        Label:
+            id: status_label
+            size_hint_y: 0.1
+            text: ''
+
+        GridLayout:
+            id: places_layout
+            cols: 1
+            size_hint_x: 0.7
+            padding: dp(10)
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+
+<PlaceButton>:
+    size_hint_y: None
+    height: dp(50)
+    text_size: self.size
+    align: 'left'
+    valign: 'middle'
+    on_press: app.toggle_visited(self)
